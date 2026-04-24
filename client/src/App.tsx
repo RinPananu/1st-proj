@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import GameCanvas from './components/GameCanvas'
 import './App.css'
 
@@ -6,12 +6,14 @@ function App() {
   const [joined, setJoined] = useState(false);
   const [username, setUsername] = useState(localStorage.getItem('stickman_username') || '');
   const [color, setColor] = useState(localStorage.getItem('stickman_color') || '#' + Math.floor(Math.random()*16777215).toString(16));
+  const [hat, setHat] = useState(localStorage.getItem('stickman_hat') || 'none');
 
   const handleJoin = (e: React.FormEvent) => {
     e.preventDefault();
     if (username.trim()) {
       localStorage.setItem('stickman_username', username);
       localStorage.setItem('stickman_color', color);
+      localStorage.setItem('stickman_hat', hat);
       setJoined(true);
     }
   };
@@ -57,6 +59,20 @@ function App() {
               style={{ width: '100%', height: '40px', padding: '0', border: 'none', cursor: 'pointer' }}
             />
           </div>
+          <div>
+            <label style={{ display: 'block', marginBottom: '5px' }}>Choose a Hat:</label>
+            <select 
+              value={hat} 
+              onChange={(e) => setHat(e.target.value)}
+              style={{ padding: '8px', width: '100%', borderRadius: '4px', border: '1px solid #ccc' }}
+            >
+              <option value="none">No Hat</option>
+              <option value="tophat">🎩 Top Hat</option>
+              <option value="baseball">🧢 Baseball Cap</option>
+              <option value="crown">👑 Crown</option>
+              <option value="beanie">🧶 Beanie</option>
+            </select>
+          </div>
           <button type="submit" style={{
             padding: '10px',
             backgroundColor: '#007bff',
@@ -77,7 +93,7 @@ function App() {
     <div className="App" style={{ textAlign: 'center' }}>
       <h1>Stick-Man Community</h1>
       <p>Welcome, {username}!</p>
-      <GameCanvas username={username} color={color} />
+      <GameCanvas username={username} color={color} hat={hat} />
       <button 
         onClick={() => setJoined(false)}
         style={{ marginTop: '20px', padding: '5px 10px', cursor: 'pointer' }}

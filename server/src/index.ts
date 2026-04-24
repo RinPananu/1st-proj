@@ -20,6 +20,7 @@ interface Player {
   y: number;
   username: string;
   color: string;
+  hat: string;
 }
 
 const players: Map<string, Player> = new Map();
@@ -27,13 +28,14 @@ const players: Map<string, Player> = new Map();
 io.on('connection', (socket) => {
   console.log(`User connected: ${socket.id}`);
 
-  socket.on('join', (data: { username: string; color: string }) => {
+  socket.on('join', (data: { username: string; color: string; hat: string }) => {
     const newPlayer: Player = {
       id: socket.id,
       x: Math.random() * 500,
       y: Math.random() * 500,
       username: data.username || 'Anonymous',
-      color: data.color || '#000000'
+      color: data.color || '#000000',
+      hat: data.hat || 'none'
     };
     players.set(socket.id, newPlayer);
     
